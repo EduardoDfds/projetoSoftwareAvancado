@@ -1,14 +1,17 @@
+import 'package:aula_pas/controle/cpf_controller.dart';
 import 'package:flutter/material.dart';
 
 class BotaoShowDialog extends StatelessWidget {
   BotaoShowDialog(
       {super.key,
+      required this.cpfDigitado,
       required this.texto,
-      required this.tituloDialog,
-      required this.menssagemAlert});
+      required this.tituloDialog});
   late String texto;
   late String tituloDialog;
-  late String menssagemAlert;
+  late String cpfDigitado;
+  
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,7 +23,7 @@ class BotaoShowDialog extends StatelessWidget {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(tituloDialog),
-                content: Text(menssagemAlert),
+                content: Text(cpfDigitado),
               );
             },
           );
