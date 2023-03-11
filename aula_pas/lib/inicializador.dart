@@ -10,7 +10,7 @@ class Inicializador extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Meu Aplicativo',
       theme: ThemeData (primaryColor: Colors.deepOrange),
-      home: const PrimeiraPagina(),
+      home:  PrimeiraPagina(),
     );
   }
 }

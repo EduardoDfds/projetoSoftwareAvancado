@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 
 class PrimeiraPagina extends StatefulWidget {
   final Key? key;
-  const PrimeiraPagina({this.key}) : super(key: key);
+  PrimeiraPagina({this.key}) : super(key: key);
+ 
 
   @override
   State<PrimeiraPagina> createState() => _PrimeiraPaginaState();
 }
 
 class _PrimeiraPaginaState extends State<PrimeiraPagina> {
-   String cpf = '';
+
+   var cpfDigitado = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +32,9 @@ class _PrimeiraPaginaState extends State<PrimeiraPagina> {
               padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
-                  CampoInput(textoHint: 'Informe seu CPF', textoLabel: 'CPF', vincularCampo: (valorDigitado) => cpf = valorDigitado, ),
+                  CampoInput(textoHint: 'Informe seu CPF', textoLabel: 'CPF',  controle: cpfDigitado,),
                   BotaoShowDialog(
-                    cpfDigitado: '${CpfController().validarCpf(cpf)}',
+                    cpfDigitado: cpfDigitado.text,
                     texto: 'OK',
                     tituloDialog: 'Informe seu CPF ',
                   ),

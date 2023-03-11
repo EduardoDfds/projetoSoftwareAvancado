@@ -1,80 +1,71 @@
 class CpfController {
-  String validarCpf(String cpf) {
-    print(cpf);
-    if (!cpf.contains('.')) return 'CPF inválido, não contem ponto ';
-    if (!cpf.contains('-')) return 'CPF inválido, não contem traço ';
-    if (cpf.length < 14) return 'Quantidade de caracteres invalida ';
+  String validarCpf(String cpfCompleto) {
+//Temporario apagar
 
-    var cpfDigitado,
-        temp2,
-        temp3,
-        temp4,
-        temp5,
-        temp6,
-        temp7,
-        temp8,
-        temp9,
-        temp10,
-        temp11,
-        temp12,
-        temp13,
-        temp14,
-        temp15;
+//>>>>>>>>>
 
-    cpfDigitado = cpf.replaceAll('.', '');
-    temp2 = cpfDigitado.replaceAll('-', '');
-    temp3 = temp2.split('');
+    if (!cpfCompleto.contains('.')) return 'CPF inválido, não contem ponto ';
+    if (!cpfCompleto.contains('-')) return 'CPF inválido, não contem traço ';
+    if (cpfCompleto.length != 14) return 'Quantidade de caracteres invalida ';
+// temp temp - cpf sem mascara
+// Temp3 lista caracteres
+    var cpfsemMascara = cpfCompleto.replaceAll('.', '').replaceAll('-', '');
 
-    temp4 = true;
-    for (int c = 0; c < temp3.length - 1; c++) {
-      if (temp3[c] == temp3[c + 1]) {
-        temp4 = false;
-      } else {
-        temp4 = true;
-        break;
+    var cpfListaNumeros = cpfsemMascara
+        .substring(0, 9)
+        .split('')
+        .map<int>((e) => int.parse(e))
+        .toList();
+
+    var ehNumerosIguais = true;
+//temp4 = true;
+    for (int c = 0; c < cpfListaNumeros.length; c++) {
+      var elementoAnterior = cpfListaNumeros[c] - 1;
+      var elementoAtual = cpfListaNumeros[c];
+      if (elementoAnterior != elementoAtual) {
+        ehNumerosIguais = false;
       }
+      break;
     }
-    if (temp4) {
-      temp5 = temp2.substring(0, 9).split('').map(int.parse).toList();
-      temp6 = 0;
-      temp7 = 10;
-      temp8 = 0;
-      for (var n in temp5) {
-        temp8 = temp7 * n + temp8;
-        temp7--;
-      }
-      temp9 = 11 - (temp8 % 11);
-      if (temp9 > 9) {
-        temp9 = 0;
-      } else {
-        temp9 = temp9;
-      }
-      temp10 = int.parse(cpf.substring(12, 13));
-      if (temp9 == temp10) {
-        temp11 = temp2.substring(0, 10).split('').map(int.parse).toList();
-        temp12 = 11;
-        temp13 = 0;
-        for (var n in temp11) {
-          temp13 = temp12 * n + temp13;
-          temp12--;
-        }
-        temp14 = 11 - (temp13 % 11);
-        if (temp14 > 9) {
-          temp14 = 0;
-        } else {
-          temp14 = temp14;
-        }
-        temp15 = int.parse(cpf.substring(13, 14));
-        if (temp14 == temp15) {
-          return 'CPF válido\n${cpf}';
-        } else {
-          return 'CPF inválido';
-        }
-      } else {
-        return 'CPF inválido';
-      }
-    } else {
-      return 'CPF inválido';
+
+    if (ehNumerosIguais) return 'CPF deve possuir numeros diferentes';
+
+    //temp5 = cpfsemMascara.substring(0, 9).split('').map(int.parse).toList(); Lista de numeros
+    //temp6 = 0; retirado não utilizamos
+
+    // temp7 = 10; peso primeiro numero
+    var pesoElemento = 10;
+
+    ///temp8 = 0; gitito calculado
+    var digitoCalculado;
+    for (var n in cpfListaNumeros) {
+      digitoCalculado += pesoElemento * n;
+      pesoElemento--;
     }
+    digitoCalculado = 11 - (digitoCalculado % 11);
+    if (digitoCalculado > 9) digitoCalculado = 0;
+
+    var primeiroDigito = int.parse(cpfsemMascara.substring(9, 10));
+    var segundoDigito = int.parse(cpfsemMascara.substring(10, 11));
+
+    if (digitoCalculado != primeiroDigito) return 'Primeiro digito incorreto';
+
+    cpfListaNumeros.add(digitoCalculado);
+
+    pesoElemento = 11;
+    digitoCalculado = 0;
+    for (var n in cpfListaNumeros) {
+      digitoCalculado += pesoElemento * n;
+      pesoElemento--;
+    }
+    digitoCalculado = 11 - (digitoCalculado % 11);
+    if (segundoDigito > 9) digitoCalculado = 0;
+
+    if (segundoDigito != digitoCalculado) return 'Segundo digito incorreto';
+    return 'CPF válido';
   }
 }
+/*
+retirar if aninhados facilitando a leitura e entendimento do códigos
+nomear de forma correta as varivés
+*/

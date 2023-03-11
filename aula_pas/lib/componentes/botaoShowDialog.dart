@@ -18,12 +18,13 @@ class BotaoShowDialog extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
+          var resultado = CpfController().validarCpf(cpfDigitado);
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(tituloDialog),
-                content: Text(cpfDigitado),
+                content: Text(resultado),
               );
             },
           );
